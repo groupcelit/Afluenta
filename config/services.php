@@ -34,5 +34,14 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-
+    'facebook' => [
+        'client_id' => '247175135792723',
+        'client_secret' => '11e321a63b790ad5d68f20434e32e857',
+        'redirect' => 'http://jlaupa.group-celit.com/auth/facebook/callback',
+    ],
+    'google' => [
+        'client_id' => '380932250213-6ohhv687iugcal8s0laqekah2ectpnsg.apps.googleusercontent.com',
+        'client_secret' => '801RxoN0pCBbZVOazZ8q7EKu',
+        'redirect' => 'http://jlaupa.group-celit.com/auth/google/callback',
+    ],
 ];

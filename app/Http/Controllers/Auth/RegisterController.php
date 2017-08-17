@@ -6,6 +6,8 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Mail;
 
 class RegisterController extends Controller
 {
@@ -67,5 +69,36 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    protected function register(Request $request)
+    {
+        $input = $request->all();
+        $validator = $this->validator($input);
+        if ($validator->passes()) {
+            $data = $this->create($input)->toArray();
+            $data['token'] = str_random(25);
+            $user = User::find($data['id']);
+            $user->token = $data['token'];
+            $user->save();
+            Mail::send('mails.confirmation', $data, function($message) use ($data){
+                $message->to($data['email']);
+                $message->subject('Confirmar registro');
+            });
+            return redirect(route('login'))->with('status','Te hemos enviado un email de confirmacion');
+        }
+        return redirect(route('login'))->with('status',$validator->errors());
+    }
+
+    public function confirmation($token)
+    {
+        $user = User::where('token',$token)->first();
+        if (!is_null($user)){
+            $user->confirmed=1;
+            $user->token='';
+            $user->save();
+            return redirect(route('login'))->with('status','Confirmado!');
+        }
+        return redirect(route('login'))->with('status','Ops ocurrio algo inesperado.');
     }
 }

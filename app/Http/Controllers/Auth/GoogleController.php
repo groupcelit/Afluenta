@@ -8,8 +8,10 @@
 namespace App\Http\Controllers\Auth;
 
 use Socialite;
+use App\Http\Controllers\Controller;
 
-class GmailController extends Controller
+
+class GoogleController extends Controller
 {
     /**
      * Redirect the user to the GitHub authentication page.
@@ -18,7 +20,7 @@ class GmailController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver('google')->redirect();
     }
 
     /**
@@ -28,8 +30,9 @@ class GmailController extends Controller
      */
     public function handleProviderCallback()
     {
-        $user = Socialite::driver('github')->user();
-
+        $user = Socialite::driver('google')->user();
+        dd($user);
+        echo url();
         // $user->token;
     }
 }

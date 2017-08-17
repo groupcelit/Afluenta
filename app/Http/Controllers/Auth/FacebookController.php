@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Socialite;
+use App\Http\Controllers\Controller;
 
 class FacebookController extends Controller
 {
@@ -18,7 +19,7 @@ class FacebookController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver('facebook')->redirect();
     }
 
     /**
@@ -28,8 +29,13 @@ class FacebookController extends Controller
      */
     public function handleProviderCallback()
     {
-        $user = Socialite::driver('github')->user();
-
-        // $user->token;
+        $user = Socialite::driver('facebook')->user();
+//        echo $user->getId();
+//        $user->getNickname();
+        echo $user->getName();
+        echo $user->getEmail();
+//        $user->getAvatar();
+       dd($user);
+        /* $user->token;*/
     }
 }
